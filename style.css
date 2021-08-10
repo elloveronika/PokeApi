@@ -1,0 +1,22 @@
+* {
+    Box-sizing: border-box; 
+
+}
+body{
+    background: linear-gradient(blue, pink);
+    min-height: 100vh;
+
+}
+
+ .outer, .inner {
+display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+
+}
+h1 > img {
+    height:100px;
+    width:200px;
+}
+
