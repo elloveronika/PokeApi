@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+
 * {
     Box-sizing: border-box; 
 
@@ -18,5 +21,11 @@ align-items: center;
 h1 > img {
     height:100px;
     width:200px;
+}
+#name {
+    display: flex;
+    justify-content: space-around;
+    font-family: 'Mouse Memoirs', sans-serif;
+    font-size: larger;
 }
 

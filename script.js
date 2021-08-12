@@ -4,7 +4,14 @@
   // hard mode: get Eevee's evolutions to display in the DOM
 
 
-document.querySelector('button').addEventListener('click' , getSprites);
+//   document.querySelector('button').addEventListener('click' , doPokeStuff);
+  document.querySelector('button').addEventListener('click' , async ()=>{
+        let poke = await getPoke(); 
+        
+        getSprites(poke);
+    });
+
+
 
 // function getPoke(){
 //     const choice = document.querySelector('input').value
@@ -41,13 +48,48 @@ document.querySelector('button').addEventListener('click' , getSprites);
 // }
 
 
+let pokeUrl = `https://pokeapi.co/api/v2/pokemon/`;
+
+async function getSprites(poke){
+ try{
+
+    document.querySelector('#img_cont').innerText = ''
+    document.querySelector('#name').innerText = ''
+
+    for(let i =0; i< poke.length; i++){
+        
+        const pokeRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${poke[i]}/`)
+
+        const pokeData = await pokeRes.json()
+        let p = document.createElement('p');
+        p.innerText = pokeData.species.name
+        let image = document.createElement('img');//thie is creating an image element 
+        image.src = pokeData.sprites.front_default; //this is reassassigning image to an added source of the sprites
+        document.getElementById("img_cont").appendChild(image);//it looks like this is appending or adding created  elements into the div id img cont
+        document.getElementById('name').appendChild(p);
+
+       
+        }
+
+ }catch(error){
+
+ }
+}
+async function  doPokeStuff(){ 
+
+    let poke = await getPoke(); 
+    
+    getSprites(poke); //this variable is declared and ran when the eventlistener triggers this function ?
+}
+
 
 
 
 async function getPoke(){
     try {
         const choice = document.querySelector('input').value.toLowerCase();
-        const pokeUrl = `https://pokeapi.co/api/v2/pokemon/${choice}/`;
+        pokeUrl = `https://pokeapi.co/api/v2/pokemon/${choice}/`
+
     
         const resOne = await fetch(pokeUrl);
         const dataOne = await resOne.json();
@@ -72,24 +114,24 @@ async function getPoke(){
             console.log(dataThree)
             const evoBegin = dataThree.chain
 
-            const firstEvo = evoBegin.species
+            // const firstEvo = evoBegin.species
             // const secondEvo = evoBegin.evolves_to[0].species
             // const thirdEvo = evoBegin.evolves_to[0].evolves_to[0].species
 
             let nextEvo = evoBegin.evolves_to
-
-
+            
             let name = [evoBegin.species.name]
-
+            
             while(nextEvo.length > 0){
     
-                name.push(nextEvo[0].species.name)
+                name.push(...nextEvo.map(poke => poke.species.name))// the dots breaks the arrays up into a list of strings which then get pushed into array of name 
 
                 // console.log(`This is inside the while loop: ${nextEvo}`)
                 nextEvo = nextEvo[0].evolves_to;
     
             }
-            return name
+            
+             return name
             // console.log(firstEvo)
             // console.log(secondEvo)
             // console.log(thirdEvo)
@@ -101,12 +143,12 @@ async function getPoke(){
 
 }
 
-async function getSprites(){
-let thisArray =  await getPoke()
-var d1 = document.querySelector('h2')
-    for(let i =0; i< thisArray.length; i++){
-        d1.insertAdjacentHTML(`afterend`, ` ${thisArray[i]}`)
-        
-    }
-    d1 = ''
-}
+// async function getPokeNames(){
+// document.querySelector('h2').innerHTML = ''
+// let thisArray =  await getPoke()
+// var d1 = document.querySelector('h2');
+
+//     for(let i =0; i< thisArray.length; i++){
+//        d1.insertAdjacentHTML. thisArray[i]
+//     }
+// }
